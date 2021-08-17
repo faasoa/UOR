@@ -168,3 +168,40 @@ video {
 #tableau_vent th, #tableau_vent td {
   padding: .3em;
 }
+
+/* Formulaire */
+form {
+  margin: 0 2em 0 0;
+}
+
+input, textarea {
+  width: 100%;
+  padding: .4em 0 .4em 0em;
+  margin-bottom: .5em;
+  border: 1px solid var(--e-color);
+}
+
+input[type=submit] {
+  background-color: var(--b-color);
+  cursor: pointer;
+}
+
+input[type=submit]:hover {
+  background-color: var(--c-color);
+}
+
+.comm {
+  border: 1px solid var(--a-color);
+  border-radius: .4em;
+  padding: 1em;
+  margin: 1em 2em 1em 0;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.comm_auteur {
+  margin: 1em 0 0 0;
+}
+
+.comm_auteur a{
+  color: black;
+}

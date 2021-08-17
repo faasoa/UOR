@@ -44,9 +44,9 @@
       <ul>
         <li><a href="https://imidic-allowance.000webhostapp.com/">Exercice 1.1</a></li>
         <li><a href="index.html">Exercice 2.1</a></li>
-        <li><a class="page_active" href="index_avec_css.html">Exercice 3.1</a></li>
+        <li><a href="index_avec_css.html">Exercice 3.1</a></li>
         <li><a href="index_avec_css_valide.html">Exercice 3.1.1</a></li>
-        <li><a href="formulaire.php">Exercice 4.1</a></li>
+        <li><a class="page_active" href="formulaire.php">Exercice 4.1</a></li>
       </ul>
     </nav>
     <section>
@@ -153,6 +153,48 @@
           <td>62 à 74</td>
         </tr>
       </table>
+      <h2 style="clear: both;">Note ton spot</h2>
+      <p>Tu te sens seul sur ton spot? C'est l'occasion de le partager.</p>
+      <form action="formulaire/formulaire_post.php" method="POST">
+        <label for="pseudo">Pseudo</label><input type="text" name="pseudo" id="pseudo" required placeholder="Pseudo">
+        <label for="mail">Adresse mail</label><input type="email" name="mail" id="mail" required placeholder="Adresse mail">
+        <label for="nom_spot">Nom du spot</label><input type="text" name="nom_spot" id="nom_spot" required placeholder="Nom du spot">
+        <label for="date_visite">Dernière visite du spot</label><input type="date" name="date_visite" id="date_visite" required>
+        <label for="commentaire">Commentaire</label><textarea name="commentaire" id="commentaire" required>Par là le blabla</textarea>
+        <input type="submit" value="Envoyer">
+      </form>
+      
+      <div id="commentaires">
+        <?php
+          // Pas de détail d'erreur
+          error_reporting(0);
+
+          // Connexion à la BDD
+          require("formulaire/connexion_bdd.php");
+
+          // Requête SQL
+          $commentaires = $bdd->query('SELECT pseudo, mail, DATE_FORMAT(date_creation, \'%d/%m/%Y à %Hh%imin\') AS date_creation_formate, nom_spot, date_visite, commentaire FROM kitesurf ORDER BY id DESC LIMIT 0,20');
+
+          // Itérer sur chaque ligne de la requête
+          while ($donnees = $commentaires->fetch())
+          {
+        ?>
+          <div class="comm">
+            <div class="comm_contenu">
+              <div style="width: 100%;">Spot : <?php echo $donnees['nom_spot'];?> visité le <?php echo $donnees['date_visite'];?> :</div>
+              <?php echo $donnees['commentaire'];?>
+            </div>
+            <div class="comm_auteur">
+              <?php echo $donnees['pseudo'] . ' (<a href="mailto:' . $donnees['mail'] . '">' . $donnees['mail'] . '</a>) le ' . $donnees['date_creation_formate'];?>
+            </div>
+          </div>
+        <?php
+          }
+          // Ferme la requête
+          $commentaires->closeCursor();
+        ?>
+      </div>
+
     </section>
     <footer>
       <p>Réalisé par <a href="mailto:robin.clerc@gmail.com">Robin Clerc</a> sous <a href="https://www.gnu.org/licenses/gpl-3.0.html">licence GPLv3</a>. <a href="https://github.com/faasoa/UOR">Code source</a>. <a href="http://icons8.com">Crédits favicon</a>. <a href="font/OFL.txt">Licence police</a>. <a href="http://validator.w3.org/check/referer" referrerpolicy="unsafe-url">Validation HTML</a>. <a href="http://jigsaw.w3.org/css-validator/check/referer" referrerpolicy="unsafe-url">Validation CSS</a>.</p>
