@@ -47,6 +47,7 @@
         <li><a href="index_avec_css.html">Exercice 3.1</a></li>
         <li><a href="index_avec_css_valide.html">Exercice 3.1.1</a></li>
         <li><a class="page_active" href="formulaire.php">Exercice 4.1</a></li>
+        <li><a href="javascript.php">Exercice 6.1</a></li>
       </ul>
     </nav>
     <section>

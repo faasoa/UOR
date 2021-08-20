@@ -174,19 +174,19 @@ form {
   margin: 0 2em 0 0;
 }
 
-input, textarea {
+input, textarea, #bouton_jouer {
   width: 100%;
   padding: .4em 0 .4em 0em;
   margin-bottom: .5em;
   border: 1px solid var(--e-color);
 }
 
-input[type=submit] {
+input[type=submit], #bouton_jouer {
   background-color: var(--b-color);
   cursor: pointer;
 }
 
-input[type=submit]:hover {
+input[type=submit]:hover, #bouton_jouer:hover {
   background-color: var(--c-color);
 }
 
@@ -205,3 +205,20 @@ input[type=submit]:hover {
 .comm_auteur a{
   color: black;
 }
+
+#casse_brique {
+  margin: 0 2em 0 0;
+}
+
+#myCanvas {
+  display: block;
+  margin: 1em auto;
+  border: 2px solid var(--a-color);
+  border-radius: .4em
+}
+
+/*
+* {
+  border: 1px solid red;
+}
+*/

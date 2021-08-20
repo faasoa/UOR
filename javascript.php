@@ -33,7 +33,7 @@
     <meta name="DC.Rights" content="https://www.gnu.org/licenses/gpl-3.0.html">
 
     <!-- CSS -->
-    <link rel="stylesheet" type="text/css" href="style_valide.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
   </head>
 
   <body>
@@ -45,9 +45,9 @@
         <li><a href="https://imidic-allowance.000webhostapp.com/">Exercice 1.1</a></li>
         <li><a href="index.html">Exercice 2.1</a></li>
         <li><a href="index_avec_css.html">Exercice 3.1</a></li>
-        <li><a class="page_active" href="index_avec_css_valide.html">Exercice 3.1.1</a></li>
+        <li><a href="index_avec_css_valide.html">Exercice 3.1.1</a></li>
         <li><a href="formulaire.php">Exercice 4.1</a></li>
-        <li><a href="javascript.php">Exercice 6.1</a></li>
+        <li><a class="page_active" href="javascript.php">Exercice 6.1</a></li>
       </ul>
     </nav>
     <section>
@@ -154,6 +154,250 @@
           <td>62 à 74</td>
         </tr>
       </table>
+      <h2 style="clear: both;">Note ton spot</h2>
+      <p>Tu te sens seul sur ton spot? C'est l'occasion de le partager.</p>
+      <form action="formulaire/javascript_post.php" method="POST">
+        <label for="pseudo">Pseudo</label><input type="text" name="pseudo" id="pseudo" required placeholder="Pseudo">
+        <label for="mail">Adresse mail</label><input type="email" name="mail" id="mail" required placeholder="Adresse mail">
+        <label for="nom_spot">Nom du spot</label><input type="text" name="nom_spot" id="nom_spot" required placeholder="Nom du spot">
+        <label for="date_visite">Dernière visite du spot</label><input type="date" name="date_visite" id="date_visite" required>
+        <label for="commentaire">Commentaire</label><textarea name="commentaire" id="commentaire" required>Par là le blabla</textarea>
+        <input type="submit" value="Envoyer">
+      </form>
+      
+      <div id="commentaires">
+        <?php
+          // Pas de détail d'erreur
+          error_reporting(0);
+
+          // Connexion à la BDD
+          require("formulaire/connexion_bdd.php");
+
+          // Requête SQL
+          $commentaires = $bdd->query('SELECT pseudo, mail, DATE_FORMAT(date_creation, \'%d/%m/%Y à %Hh%imin\') AS date_creation_formate, nom_spot, date_visite, commentaire FROM kitesurf ORDER BY id DESC LIMIT 0,20');
+
+          // Itérer sur chaque ligne de la requête
+          while ($donnees = $commentaires->fetch())
+          {
+        ?>
+          <div class="comm">
+            <div class="comm_contenu">
+              <div style="width: 100%;">Spot : <?php echo $donnees['nom_spot'];?> visité le <?php echo $donnees['date_visite'];?> :</div>
+              <?php echo $donnees['commentaire'];?>
+            </div>
+            <div class="comm_auteur">
+              <?php echo $donnees['pseudo'] . ' (<a href="mailto:' . $donnees['mail'] . '">' . $donnees['mail'] . '</a>) le ' . $donnees['date_creation_formate'];?>
+            </div>
+          </div>
+        <?php
+          }
+          // Ferme la requête
+          $commentaires->closeCursor();
+        ?>
+      </div>
+
+      <h2>Pas de vent ?</h2>
+      <div id="casse_brique">
+        <p>Passe le temps avec un petit jeu. Contrôles : &#8592; gauche et &#8594; droite sur le clavier, ou avec la souris. Indisponible sur mobile. <button type="button" id="bouton_jouer">Jouer</button></p>
+
+        <canvas id="myCanvas" width="480" height="320"></canvas>
+
+        <script>
+          var canvas = document.getElementById("myCanvas");
+          var ctx = canvas.getContext("2d");
+
+          var x = canvas.width/2;
+          var y = canvas.height-30;
+          var dx = 2;
+          var dy = -2;
+          var ballRadius = 10;
+
+          var paddleHeight = 10;
+          var paddleWidth = 75;
+          var paddleX = (canvas.width - paddleWidth) / 2;
+
+          var rightPressed = false;
+          var leftPressed = false;
+
+          var brickRowCount = 3;
+          var brickColumnCount = 5;
+          var brickWidth = 75;
+          var brickHeight = 20;
+          var brickPadding = 10;
+          var brickOffsetTop = 30;
+          var brickOffsetLeft = 30;
+
+          var bricks = [];
+          for(var c = 0; c < brickColumnCount; c++) {
+            bricks[c] = [];
+            for(var r = 0; r < brickRowCount; r++) {
+              bricks[c][r] = { x: 0, y: 0, status: 1 };
+            }
+          }
+
+          var score = 0;
+          var lives = 3;
+
+          var bouton_jouer = document.getElementById("bouton_jouer");
+
+          document.addEventListener("keydown", keyDownHandler, false);
+          document.addEventListener("keyup", keyUpHandler, false);
+          document.addEventListener("mousemove", mouseMoveHandler, false);
+          bouton_jouer.addEventListener("click", jouer, false);
+
+          function keyDownHandler(e) {
+            if(e.key == "Right" || e.key == "ArrowRight") {
+              rightPressed = true;
+            }
+            else if(e.key == "Left" || e.key == "ArrowLeft") {
+              leftPressed = true;
+            }
+          }
+          
+          function keyUpHandler(e) {
+            if(e.key == "Right" || e.key == "ArrowRight") {
+              rightPressed = false;
+            }
+            else if(e.key == "Left" || e.key == "ArrowLeft") {
+              leftPressed = false;
+            }
+          }
+
+          function mouseMoveHandler(e) {
+            var relativeX = e.clientX - canvas.offsetLeft;
+            if(relativeX > 0 && relativeX < canvas.width) {
+              paddleX = relativeX - paddleWidth / 2;
+            }
+          }
+
+          function jouer() {
+            draw();
+          } 
+
+          function drawBall() {
+            ctx.beginPath();
+            ctx.arc(x, y, ballRadius, 0, Math.PI*2);
+            ctx.fillStyle = "#A34C39";
+            ctx.fill();
+            ctx.closePath();
+          }
+
+          function drawPaddle() {
+            ctx.beginPath();
+            ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
+            ctx.fillStyle = "#A34C39";
+            ctx.fill();
+            ctx.closePath();
+          }
+
+          function drawBricks() {
+            for(var c = 0; c < brickColumnCount; c++) {
+              for(var r = 0; r < brickRowCount; r++) {
+                if(bricks[c][r].status ==1){
+                  var brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft;
+                  var brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
+                  bricks[c][r].x = brickX;
+                  bricks[c][r].y = brickY;
+                  ctx.beginPath();
+                  ctx.rect(brickX, brickY, brickWidth, brickHeight);
+                  ctx.fillstyle = "#A34C39";
+                  ctx.fill();
+                  ctx.closePath();
+                }
+              }
+            }
+          }
+
+          function drawScore() {
+            ctx.font = "16px atkinson_hyperlegible";
+            ctx.fillStyle = "#A34C39";
+            ctx.fillText("Score: " + score, 8, 20);
+          }
+
+          function drawLives() {
+            ctx.font = "16px atkinson_hyperlegible";
+            ctx.fillStyle = "#A34C39";
+            ctx.fillText("Lives: " + lives, canvas.width - 65, 20);
+          }
+
+          function collisionDetection() {
+            for(var c = 0; c < brickColumnCount; c++) {
+              for(var r = 0; r < brickRowCount; r++) {
+                var b = bricks[c][r];
+                if(b.status == 1) {
+                  if(x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
+                    dy = -dy;
+                    b.status = 0;
+                    // Incrémente le score
+                    score ++;
+                    // Quand toutes les briques sont cassées = victoire
+                    if(score == brickRowCount * brickColumnCount) {
+                      alert("Victoire !");
+                      document.location.reload();
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawBricks();
+            drawBall();
+            drawPaddle();
+            collisionDetection();
+            drawScore();
+            drawLives();
+
+            x += dx;
+            y += dy;
+
+            if(y + dy < ballRadius) {
+              dy = -dy;
+            }
+            else if(y + dy > canvas.height - ballRadius) {
+              if(x > paddleX && x < paddleX + paddleWidth) {
+                dy = -dy;
+              }
+              else {
+                lives --;
+                if(!lives) {
+                  alert("GAME OVER");
+                  document.location.reload();
+                }
+                else {
+                  x = canvas.width / 2;
+                  y = canvas.height -30;
+                  dx = 2;
+                  dy = -2;
+                  paddleX = (canvas.width - paddleWidth) / 2;
+                }
+              }
+            }
+
+            if(x + dx < ballRadius || x + dx > canvas.width - ballRadius) {
+              dx = -dx;
+            }
+
+            if(rightPressed) {
+              paddleX += 7;
+              if(paddleX + paddleWidth > canvas.width) {
+                paddleX = canvas.width - paddleWidth;
+              }
+            }
+            else if(leftPressed) {
+              paddleX -= 7;
+              if(paddleX < 0) {
+                paddleX = 0;
+              }
+            }
+            // Appeler draw à chaque nouvelle image (fréquence gérée par le navigateur)
+            requestAnimationFrame(draw);
+          }
+        </script>
+      </div>
+
     </section>
     <footer>
       <p>Réalisé par <a href="mailto:robin.clerc@gmail.com">Robin Clerc</a> sous <a href="https://www.gnu.org/licenses/gpl-3.0.html">licence GPLv3</a>. <a href="https://github.com/faasoa/UOR">Code source</a>. <a href="http://icons8.com">Crédits favicon</a>. <a href="font/OFL.txt">Licence police</a>. <a href="http://validator.w3.org/check/referer" referrerpolicy="unsafe-url">Validation HTML</a>. <a href="http://jigsaw.w3.org/css-validator/check/referer" referrerpolicy="unsafe-url">Validation CSS</a>.</p>
