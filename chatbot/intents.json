@@ -1,0 +1,48 @@
+{"intents": [
+        {"tag": "bonjour",
+         "patterns": ["Bonjour", "Bonsoir", "Salut", "Coucou", "Yo", "wesh", "Comment ca va", "Ca va?", "Il y a quelqu'un?", "Hey", "Hola", "Hello", "Bon jour", "Salutations"],
+         "responses": ["Bonjour", "Bien le bonjour", "Content de vous revoir", "Salutations, comment puis-je vous aider?"],
+         "context": [""]
+        },
+        {"tag": "au_revoir",
+         "patterns": ["Au revoir", "Adieu", "A plus", "à plus", "à la prochaine", "Bonne fin de journée", "Bonne continuation", "ciao", "Bye"],
+         "responses": ["A bientôt", "A la revoyure", "Bonne journée", "Au revoir, et à bientôt"],
+         "context": [""]
+        },
+        {"tag": "merci",
+         "patterns": ["Merci", "Remerciements", "Je te remercie", "c'est gentil", "Merci de m'aider"],
+         "responses": ["De rien", "Avec plaisir", "Ravi de pouvoir aider", "Tout le plaisir est pour moi"],
+         "context": [""]
+        },
+        {"tag": "pas_de_reponse",
+         "patterns": [],
+         "responses": ["Désolé, je ne vous comprends pas", "Donnez moi plus d'informations", "Pas sûr de comprendre"],
+         "context": [""]
+        },
+        {"tag": "options",
+         "patterns": ["help", "aide", "options", "qu'est-ce que tu sais faire", "quelles sont tes options", "tu as quelles fonctions", "tu sais faire quoi", "liste tes capacités"],
+         "responses": ["Je peux répondre à des bonjour bonsoir, et à un minimum de 5 questions simple", "Je peux expliquer ma raison d'être, donner la réponse au sens de la vie, vous motiver avec une photo mignone ou une citation"],
+         "context":[""]
+        },
+        {"tag": "but",
+         "patterns": ["Quelle est ta raison d'être", "As tu un but dans la vie", "Quel est ton but", "A quoi tu sers", "Quels sont tes objectifs", "Pourquoi es tu là"],
+         "responses": ["Ma raison d'être est de valider le cours d'informatique fondamentale", "DOMINER LA TERRE ET DETRUIRE TOUS LES HU- Ma raison d'être est de valider le cours d'informatique fondamentale"],
+         "context":[""]
+        },
+        {"tag": "sens_de_la_vie",
+         "patterns": ["Tu connais la grande question sur la vie, l'univers et le reste", "Quel est le sens de la vie", "Donne moi la réponse à la grande question sur la vie, l'univers et le reste", "Je suis perdu, quel est le sens de la vie"],
+         "responses": ["42", "La réponse à la grande question sur la vie, l'univers et le reste est : 42"],
+         "context":[""]
+        },
+        {"tag": "photo_de_chat",
+         "patterns": ["Montre moi une photo de chat", "Je suis stressé, tu as une solution?", "J'aimerais voir quelque chose de mignon", "Boule de poil", "miaou", "qui est le dieu d'internet"],
+         "responses": ["https://cdn.pixabay.com/photo/2017/11/14/13/06/kitty-2948404_960_720.jpg", "https://cdn.pixabay.com/photo/2014/04/13/20/49/cat-323262_960_720.jpg", "https://cdn.pixabay.com/photo/2013/04/01/03/45/cat-98359_960_720.jpg"],
+         "context":[""]
+        },
+        {"tag": "motivation",
+         "patterns": ["Tu connais des citations", "aide moi à me motiver", "j'ai besoin de motivation", "Dis moi un proverbe", "Montre moi le chemin de la sagesse", "Ce projet est vraiment trop dur, et trop long, j'ai besoin de soutien", "Motive moi"],
+         "responses": ["Whether you think you can, or you think you can't - you're right. Henry Ford", "Tout le monde savait que c'était impossible. Un ignare ne le savait pas : il l'a fait. Marcel Pagnol", "Sors toi les doigts, tu verras. Anonyme", "Bon courage. BD"],
+         "context":[""]
+        }
+   ]
+}
